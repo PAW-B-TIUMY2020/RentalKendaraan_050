@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 
 namespace RentalKendaraan_20180140050.Models
 {
@@ -10,7 +11,10 @@ namespace RentalKendaraan_20180140050.Models
             Customer = new HashSet<Customer>();
         }
 
+        [Required(ErrorMessage = "ID Gender tidak boleh kosong")]
         public int IdGender { get; set; }
+
+        [Required(ErrorMessage = "Nama tidak boleh kosong")]
         public string NamaGender { get; set; }
 
         public ICollection<Customer> Customer { get; set; }
