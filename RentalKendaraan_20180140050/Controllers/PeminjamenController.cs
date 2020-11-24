@@ -19,7 +19,7 @@ namespace RentalKendaraan_20180140050.Controllers
         }
 
         // GET: Peminjamen
-        public async Task<IActionResult> Index(string ktsd, string searchString)
+        public async Task<IActionResult> Index(string ktsd, string searchString, string sortOrder, string currentFilter, int? pageNumber)
         {
             // buat list untuk menyimpan ketersediaan
             var ktsdList = new List<string>();
@@ -45,8 +45,24 @@ namespace RentalKendaraan_20180140050.Controllers
             {
                 menu = menu.Where(s => s.TglPeminjaman.ToString().Contains(searchString));
             }
+            //membuat pagedlist
 
-            return View(await menu.ToListAsync());
+            ViewData["CurrentSort"] = sortOrder;
+
+            if (searchString != null)
+            {
+                pageNumber = 1;
+            }
+            else
+            {
+                searchString = currentFilter;
+            }
+            ViewData["CurrentFilter"] = searchString;
+
+            int pageSize = 5;
+            return View(await PaginatedList<Peminjaman>.CreateAsync(menu.AsNoTracking(),pageNumber ?? 1, pageSize));
+
+            
         }
 
         // GET: Peminjamen/Details/5
