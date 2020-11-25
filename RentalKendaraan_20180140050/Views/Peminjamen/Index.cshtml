@@ -23,19 +23,23 @@
     <thead>
         <tr>
             <th>
-                @Html.DisplayNameFor(model => model.TglPeminjaman)
+                @*Html.DisplayName("Tanggal Peminjaman")*@
+                <a asp-action="Index" asp-route-sortOrder="@ViewData["DataSortParm"]" asp-route-currentFilter="@ViewData["CurrentFilter"]">Tanggal Peminjaman</a>
+
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Biaya)
+                @*Html.DisplayName("Id Customer")*@
+                <a asp-action="Index" asp-route-sortOrder="@ViewData["NamaSortParm"]" asp-route-currentFilter="@ViewData["CurrentFilter"]">Nama Customer</a>
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.IdCostumerNavigation)
+                @Html.DisplayName("Biaya")
+            </th>
+
+            <th>
+                @Html.DisplayName("Id Jaminan")
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.IdJaminanNavigation)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.IdKendaraanNavigation)
+                @Html.DisplayName("Id Kendaraan")
             </th>
             <th></th>
         </tr>
@@ -85,22 +89,22 @@
     </tbody>
 </table>
 
-@{ 
+@{
     var prevDisabled = !Model.HasPreviousPage ? "disabled" : "";
-    var nextDisabled = !Model.HashNextPage ? "disabled" : "";
+    var nextDisabled = !Model.HasNextPage ? "disabled" : "";
 }
 <a asp-action="Index"
     asp-route-sortOrder="@ViewData["CurrentSort"]"
     asp-route-pageNumber ="@(Model.PageIndex +1 )"
     asp-route-currentFilter="@ViewData["CurrentFilter"]"
-    class="="btn btn-default @prevDisabled">
+    class="btn btn-default @prevDisabled">
     Previous
 </a>
 <a asp-action="Index"
    asp-route-sortOrder="@ViewData[" CurrentSort"]"
    asp-route-pageNumber="@(Model.PageIndex + 1 )"
    asp-route-currentFilter="@ViewData[" CurrentFilter"]"
-   class="=" btn btn-default @prevDisabled">
-    Previous
+   class= " btn btn-default @prevDisabled">
+   Next
 </a>
 

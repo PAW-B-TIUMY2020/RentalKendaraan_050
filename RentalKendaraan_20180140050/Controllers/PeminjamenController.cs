@@ -32,7 +32,7 @@ namespace RentalKendaraan_20180140050.Controllers
             ViewBag.ktsd = new SelectList(ktsdList);
 
             //pangil db context
-            var menu = from m in _context.Peminjaman select m;
+            var menu = from m in _context.Peminjaman.Include(p => p.IdCostumerNavigation).Include(p => p.IdJaminanNavigation).Include(p => p.IdKendaraanNavigation) select m;
 
             //untuk memilih dropdownlist ketersediaan
             if (!string.IsNullOrEmpty(ktsd))
@@ -58,6 +58,25 @@ namespace RentalKendaraan_20180140050.Controllers
                 searchString = currentFilter;
             }
             ViewData["CurrentFilter"] = searchString;
+
+            //untuk sorting
+            ViewData["NamaSortParm"] = String.IsNullOrEmpty(sortOrder) ? "name_decs" : "";
+            ViewData["DateSortParm"] = sortOrder == "Date" ? "date_desc" : "Date";
+            switch (sortOrder)
+            {
+                case "name_desc":
+                    menu = menu.OrderByDescending(s => s.IdCostumerNavigation.NamaCustomer);
+                    break;
+                case "Date":
+                    menu = menu.OrderBy(s => s.TglPeminjaman);
+                    break;
+                case "date_desc":
+                    menu = menu.OrderByDescending(s => s.TglPeminjaman);
+                    break;
+                default: //name ascending
+                    menu = menu.OrderBy(s => s.IdCostumerNavigation.NamaCustomer);
+                    break;
+            }
 
             int pageSize = 5;
             return View(await PaginatedList<Peminjaman>.CreateAsync(menu.AsNoTracking(),pageNumber ?? 1, pageSize));

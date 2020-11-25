@@ -19,7 +19,7 @@ namespace RentalKendaraan_20180140050.Controllers
         }
 
         // GET: Jaminans
-        public async Task<IActionResult> Index(string ktsd, string searchString)
+        public async Task<IActionResult> Index(string ktsd, string searchString, string sortOrder, string currentFilter, int? pageNumber)
         {
             //buat list untuk menyimpan ketersediaan
             var ktsdList = new List<string>();
@@ -45,8 +45,34 @@ namespace RentalKendaraan_20180140050.Controllers
             {
                 menu = menu.Where(s => s.NamaJaminan.Contains(searchString));
             }
+            //mmebuat pagedlist
+            ViewData["CurrentShort"] = sortOrder;
+            if (searchString != null)
+            {
+                pageNumber = 1;
+            }
+            else
+            {
+                searchString = currentFilter;
+            }
+            ViewData["CurrentFilter"] = searchString;
 
-            return View(await menu.ToListAsync());
+            //definisi jumlah data pada halaman
+            int pageSize = 5;
+
+            //untuk sorting
+            ViewData["NamaSortParm"] = String.IsNullOrEmpty(sortOrder) ? "name_decs" : "";
+            switch (sortOrder)
+            {
+                case "name_desc":
+                    menu = menu.OrderByDescending(s => s.NamaJaminan);
+                    break;
+                default: //name ascending
+                    menu = menu.OrderBy(s => s.NamaJaminan);
+                    break;
+            }
+
+            return View(await PaginatedList<Jaminan>.CreateAsync(menu.AsNoTracking(), pageNumber ?? 1, pageSize));
         }
 
         // GET: Jaminans/Details/5

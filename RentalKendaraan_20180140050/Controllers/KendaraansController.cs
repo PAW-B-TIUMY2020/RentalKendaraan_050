@@ -19,7 +19,7 @@ namespace RentalKendaraan_20180140050.Controllers
         }
 
         // GET: Kendaraans
-        public async Task<IActionResult> Index(string ktsd, string searchString)
+        public async Task<IActionResult> Index(string ktsd, string searchString, string sortOrder, string currentFilter, int? pageNumber)
         {
             //buat list menyimpan ketersediaan
             var ktsdList = new List<string>();
@@ -47,7 +47,23 @@ namespace RentalKendaraan_20180140050.Controllers
                 || s.NoStnk.Contains(searchString));
             }
 
-            return View(await menu.ToListAsync());
+           
+            //untuk sorting
+            ViewData["NamaSortParm"] = String.IsNullOrEmpty(sortOrder) ? "name_decs" : "";
+            switch (sortOrder)
+            {
+                case "name_desc":
+                    menu = menu.OrderByDescending(s => s.NamaKendaraan);
+                    break;
+                default: //name ascending
+                    menu = menu.OrderBy(s => s.NamaKendaraan);
+                    break;
+            }
+
+            //definisi jumlah data pada halaman
+            int pageSize = 5;
+
+            return View(await PaginatedList<Kendaraan>.CreateAsync(menu.AsNoTracking(), pageNumber ?? 1, pageSize));
 
         }
 

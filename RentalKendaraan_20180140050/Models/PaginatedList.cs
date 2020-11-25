@@ -28,7 +28,7 @@ namespace RentalKendaraan_20180140050.Models
             }
         }
 
-        public bool HashNextPage
+        public bool HasNextPage
         {
             get
             {
