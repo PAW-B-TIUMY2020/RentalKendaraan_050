@@ -24,12 +24,16 @@
         <tr>
             <th>
                 @*Html.DisplayName("Tanggal Peminjaman")*@
-                <a asp-action="Index" asp-route-sortOrder="@ViewData["DataSortParm"]" asp-route-currentFilter="@ViewData["CurrentFilter"]">Tanggal Peminjaman</a>
+                <a asp-action="Index" 
+                    asp-route-sortOrder="@ViewData["DateSortParm"]" 
+                    asp-route-currentFilter="@ViewData["CurrentFilter"]">Tanggal Peminjaman</a>
 
             </th>
             <th>
                 @*Html.DisplayName("Id Customer")*@
-                <a asp-action="Index" asp-route-sortOrder="@ViewData["NamaSortParm"]" asp-route-currentFilter="@ViewData["CurrentFilter"]">Nama Customer</a>
+                <a asp-action="Index" 
+                    asp-route-sortOrder="@ViewData["NamaSortParm"]" 
+                    asp-route-currentFilter="@ViewData["CurrentFilter"]">Nama Customer</a>
             </th>
             <th>
                 @Html.DisplayName("Biaya")

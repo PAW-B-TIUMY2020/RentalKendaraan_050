@@ -59,6 +59,9 @@ namespace RentalKendaraan_20180140050.Controllers
             }
             ViewData["CurrentFilter"] = searchString;
 
+            //definisi jumlah data pada halaman
+            int pageSize = 5;
+
             //untuk sorting
             ViewData["NamaSortParm"] = String.IsNullOrEmpty(sortOrder) ? "name_decs" : "";
             ViewData["DateSortParm"] = sortOrder == "Date" ? "date_desc" : "Date";
@@ -78,10 +81,8 @@ namespace RentalKendaraan_20180140050.Controllers
                     break;
             }
 
-            int pageSize = 5;
             return View(await PaginatedList<Peminjaman>.CreateAsync(menu.AsNoTracking(),pageNumber ?? 1, pageSize));
 
-            
         }
 
         // GET: Peminjamen/Details/5

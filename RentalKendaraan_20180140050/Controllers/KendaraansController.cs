@@ -23,9 +23,9 @@ namespace RentalKendaraan_20180140050.Controllers
         {
             //buat list menyimpan ketersediaan
             var ktsdList = new List<string>();
+
             //query mengambil data
             var ktsdQuery = from d in _context.Kendaraan orderby d.Ketersediaan select d.Ketersediaan;
-
             ktsdList.AddRange(ktsdQuery.Distinct());
 
             //untuk menampilkan di view
@@ -46,10 +46,28 @@ namespace RentalKendaraan_20180140050.Controllers
                 menu = menu.Where(s => s.NoPolisi.Contains(searchString) || s.NamaKendaraan.Contains(searchString)
                 || s.NoStnk.Contains(searchString));
             }
+            //untuk memilih dropdownlist ketersedian
+            if (!string.IsNullOrEmpty(ktsd))
+            {
+                menu = menu.Where(x => x.Ketersediaan == ktsd);
+            }
+            //mmebuat pagedlist
+            ViewData["CurrentShort"] = sortOrder;
+            if (searchString != null)
+            {
+                pageNumber = 1;
+            }
+            else
+            {
+                searchString = currentFilter;
+            }
+            ViewData["CurrentFilter"] = searchString;
 
-           
+            //definisi jumlah data pada halaman
+            int pageSize = 5;
+
             //untuk sorting
-            ViewData["NamaSortParm"] = String.IsNullOrEmpty(sortOrder) ? "name_decs" : "";
+            ViewData["NameSortParm"] = String.IsNullOrEmpty(sortOrder) ? "name_desc" : "";
             switch (sortOrder)
             {
                 case "name_desc":
@@ -60,10 +78,8 @@ namespace RentalKendaraan_20180140050.Controllers
                     break;
             }
 
-            //definisi jumlah data pada halaman
-            int pageSize = 5;
-
             return View(await PaginatedList<Kendaraan>.CreateAsync(menu.AsNoTracking(), pageNumber ?? 1, pageSize));
+
 
         }
 

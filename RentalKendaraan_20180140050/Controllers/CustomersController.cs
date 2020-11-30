@@ -61,8 +61,11 @@ namespace RentalKendaraan_20180140050.Controllers
             }
             ViewData["CurrentFilter"] = searchString;
 
+            //definisi jmlh data pda halaman
+            int pageSize = 5;
+
             //untuk sorting
-            ViewData["NamaSortParm"] = String.IsNullOrEmpty(sortOrder) ? "name_decs" : "";
+            ViewData["NamaSortParm"] = String.IsNullOrEmpty(sortOrder) ? "name_desc" : "";
             switch (sortOrder)
             {
                 case "name_desc":
@@ -73,7 +76,7 @@ namespace RentalKendaraan_20180140050.Controllers
                     break;
             }
 
-            int pageSize = 5;
+            
             return View(await PaginatedList<Customer>.CreateAsync(menu.AsNoTracking(), pageNumber ?? 1, pageSize));
         }
 
